@@ -1,0 +1,55 @@
+﻿@page "/boundary"
+
+@using ProjectUnitTest.Data
+@inject TriangleService TriangleService
+
+<h1>Boundary value analysis</h1>
+
+@if (triangles == null)
+{
+	<p><em>Loading...</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Edge A</th>
+				<th>Edge B</th>
+				<th>Edge C</th>
+				<th>Expected Result</th>
+			</tr>
+		</thead>
+		<tbody>
+			@for(int i =0; i < triangles.Count;i++)
+			{
+				<tr>
+					<td>@i</td>
+					<td>@triangles[i].EdgeA</td>
+					<td>@triangles[i].EdgeB</td>
+					<td>@triangles[i].EdgeC</td>
+					<td>@triangles[i].TriangleType</td>
+				</tr>
+			}
+			@*@foreach(var item in triangles){
+				<tr>
+					<td></td>
+					<td>@item.EdgeA</td>
+					<td>@item.EdgeB</td>
+					<td>@item.EdgeC</td>
+					<td>@item.TriangleType</td>
+				</tr>
+			}*@
+		</tbody>
+	</table>
+}
+
+@code {
+	private List<Triangle> triangles = new List<Triangle>();
+
+	protected override async Task OnInitializedAsync()
+	{		
+		triangles = await TriangleService.GetBoundaryTriangleListAsync();
+	}
+}
